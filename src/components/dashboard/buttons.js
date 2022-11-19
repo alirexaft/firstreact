@@ -1,9 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Navbar from "./dashboard/navbar";
-import UserInfo from "./user/userinfo";
+import Navbar from "./navbar";
+import UserInfo from "../user/userinfo";
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
+import {AuthCheck} from "../test";
 
 
 const Buttons = () => {
+
+    const nav = useNavigate()
+
+    useEffect( () => {
+        if(AuthCheck()){
+            nav('/login');
+        }
+    },[]);
+
     return(
         <>
             <div id="wrapper">

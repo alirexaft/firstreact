@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from "axios";
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import {useEffect} from "react";
+import {AuthCheck} from "../test";
 
 
 
@@ -11,9 +13,16 @@ const Login = () => {
     const [password, setPassword] = useState(null);
     const nav = useNavigate()
 
-
+    useEffect( () => {
+        if(!(AuthCheck())){
+            nav('/');
+        }
+    },[]);
 
     function checkUsername(username){
+        if (username == null){
+            return "تعداد کاراکتر نام کاربری ورودی باید بیشتر از 10 باشد";
+        }
         if (username.length < 10 || username.length === 0 || username === ""){
             return "تعداد کاراکتر نام کاربری ورودی باید بیشتر از 10 باشد";
         }
@@ -23,6 +32,9 @@ const Login = () => {
     }
 
     function checkPassword(password){
+        if (password == null){
+            return "تعداد کاراکتر نام کاربری ورودی باید بیشتر از 10 باشد";
+        }
         if (password.length < 10 || password.length === 0 || password === ""){
             return "تعداد کاراکتر رمز ورودی باید بیشتر از 10 باشد";
         }
@@ -56,7 +68,8 @@ const Login = () => {
             }
             else {
                 localStorage.setItem("Auth-Token", response.data.token);
-                alert("Token: " + response.data.token);
+                alert("Wellcome");
+                nav("/");
             }
 
         }
@@ -73,82 +86,86 @@ const Login = () => {
     return (
         <>
 
-            <section className="vh-100" style={{backgroundColor: "#e2d5de"}}>
-                <div className="container py-5 h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col col-xl-6">
+            <div className="container" style={{
+                backgroundColor: "#0700DE"
+            }}>
+                <meta charSet="utf-8" />
+                <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+                <meta name="description" content />
+                <meta name="author" content />
+                <title>SB Admin 2 - Login</title>
+                {/* Custom fonts for this template*/}
+                <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+                <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+                {/* Custom styles for this template*/}
+                <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+                <div className="container">
+                    {/* Outer Row */}
+                    <div className="row justify-content-center">
+                        <div className="col-xl-10 col-lg-12 col-md-9">
+                            <div className="card o-hidden border-0 shadow-lg my-5">
+                                <div className="card-body p-0">
+                                    {/* Nested Row within Card Body */}
+                                    <div className="row">
+                                        <div className="col-lg-6 d-none d-lg-block bg-login-image" />
+                                        <div className="col-lg-6">
+                                            <div className="p-5">
+                                                <div className="text-center">
+                                                    <h1 className="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                                </div>
+                                                <form className="user">
+                                                    <div className="form-group">
+                                                        <input type="text" className="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..."
+                                                               onChange={(event => {
+                                                                   setUsername(event.target.value);
 
-                            <div className="card" style={{borderRadius: "15px"}}>
-                                <div className="card-body p-5">
+                                                               })}
+                                                        />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <input type="password" className="form-control form-control-user" id="exampleInputPassword" placeholder="Password"
+                                                               onChange={(event => {
+                                                                   setPassword(event.target.value);
 
-                                    <h6 className="mb-3" style={{fontSize: "25px",
-                                        marginLeft: 170,
-                                        marginRight: 100}}>Sign In</h6>
+                                                               })}/>
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <div className="custom-control custom-checkbox small">
+                                                            <input type="checkbox" className="custom-control-input" id="customCheck" />
+                                                            <label className="custom-control-label" htmlFor="customCheck">Remember
+                                                                Me</label>
+                                                        </div>
+                                                    </div>
+                                                    <button className="btn btn-primary btn-user btn-block" onClick={handleSubmit}>
+                                                        Login
+                                                    </button>
+                                                    <hr />
+                                                    <a href="index.html" className="btn btn-google btn-user btn-block">
+                                                        <i className="fab fa-google fa-fw" /> Login with Google
+                                                    </a>
+                                                    <a href="index.html" className="btn btn-facebook btn-user btn-block">
+                                                        <i className="fab fa-facebook-f fa-fw" /> Login with Facebook
+                                                    </a>
+                                                </form>
+                                                <hr />
 
-                                    <form method="post" onSubmit={handleSubmit}>
-
-                                        <div className="form-outline mb-4">
-                                            <input type="text" id="form2Example1" className="form-control"
-                                                   name="username"
-                                                   onChange={(event)=>{
-                                                       setUsername(event.target.value);
-                                                   }}/>
-                                            <label className="form-label" htmlFor="form2Example1">Username</label>
-                                        </div>
-
-
-                                        <div className="form-outline mb-4">
-                                            <input type="password" id="form2Example2" className="form-control"
-                                                   name="password"
-                                                   onChange={(event)=>{
-                                                       setPassword(event.target.value);
-                                                   }}/>
-                                            <label className="form-label" htmlFor="form2Example2">Password</label>
-                                        </div>
-
-
-                                        <div className="row mb-4">
-                                            <div className="col d-flex justify-content-center">
-
+                                                <div className="text-center">
+                                                    <a className="small" href="/register">Create an Account!</a>
+                                                </div>
                                             </div>
                                         </div>
-
-
-                                        <button type="submit" className="btn btn-primary btn-block mb-4"
-                                        style={{
-                                            marginLeft: 170,
-                                            marginRight: 100
-                                        }}>Sign in
-                                        </button>
-
-
-                                        <div className="text-center">
-                                            <p>Not a member? <a href="http://localhost:3000/user/register">Register</a></p>
-                                            <button type="button" className="btn btn-link btn-floating mx-1">
-                                                <i className="fab fa-facebook-f"/>
-                                            </button>
-
-                                            <button type="button" className="btn btn-link btn-floating mx-1">
-                                                <i className="fab fa-google"/>
-                                            </button>
-
-                                            <button type="button" className="btn btn-link btn-floating mx-1">
-                                                <i className="fab fa-twitter"/>
-                                            </button>
-
-                                            <button type="button" className="btn btn-link btn-floating mx-1">
-                                                <i className="fab fa-github"/>
-                                            </button>
-                                        </div>
-                                    </form>
-
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-            </section>
+                {/* Bootstrap core JavaScript*/}
+                {/* Core plugin JavaScript*/}
+                {/* Custom scripts for all pages*/}
+            </div>
+
         </>
     )
 

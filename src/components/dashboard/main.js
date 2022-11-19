@@ -1,16 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
 import UserInfo from "../user/userinfo";
-
+import {useEffect} from "react";
+import {AuthCheck} from "../test";
 
 
 const Main = () => {
 
-    // const [username, setUsername] = useState(null);
-    // const [password, setPassword] = useState(null);
-    // const nav = useNavigate()
+    const nav = useNavigate()
+
+    useEffect( () => {
+        if(AuthCheck()){
+            nav('/login');
+        }
+    },[]);
+
 
 
     return (

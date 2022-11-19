@@ -1,14 +1,17 @@
 import {useState, useEffect } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const UserInfo = () => {
 
     const [avatar, setAvatar] = useState(null);
     const [fullName, setFullName] = useState(null);
+    const nav = useNavigate()
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
         await console.log("1");
-        const response =  await axios.get("https://reqres.in/api/users/2").catch(function (error){
+        const response =  await axios.get("https://reqres.in/api/users/4").catch(function (error){
             if (error){
                 alert(error.response)
             }
@@ -18,6 +21,11 @@ const UserInfo = () => {
         await setFullName(response.data.data.first_name + " " + response.data.data.last_name)
     },[]);
 
+    async function onLogoutClick(event) {
+        await localStorage.clear();
+        await nav('/login');
+
+    }
 
 
 
@@ -37,9 +45,10 @@ const UserInfo = () => {
         <link href="/css/sb-admin-2.min.css" rel="stylesheet" />
             <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             {/* Sidebar Toggle (Topbar) */}
-            <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
-                <i className="fa fa-bars" />
-            </button>
+                <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
+                    <i className="fa fa-bars" />
+                </button>
+                <button type="button" className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
             {/* Topbar Search */}
             <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                 <div className="input-group">
